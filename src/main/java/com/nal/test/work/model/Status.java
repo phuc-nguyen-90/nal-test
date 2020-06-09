@@ -17,9 +17,9 @@ import lombok.Data;
 public class Status {
 
 	@Id
-	@Column(name = "name")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private long id;
 
 	@Column(name = "name")
 	private String name;

@@ -1,33 +1,54 @@
 package com.nal.test.work.controller;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nal.test.work.dto.StatusDto;
-import com.nal.test.work.dto.WorkDto;
-import com.nal.test.work.model.Status;
 import com.nal.test.work.model.Work;
+import com.nal.test.work.service.WorkService;
 
 @RestController
 @RequestMapping("/work")
 public class WorkController {
 
 	@Autowired
-    private ModelMapper modelMapper;
-	
-	private WorkDto convertToWorkDto(final Work work) {
-		return modelMapper.map(work, WorkDto.class);
+	private WorkService workService;
+
+	@GetMapping
+	public ResponseEntity<Page<Work>> getAllWorks(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
+		Page<Work> workPages = workService.fetchAllWork(page, size, sortBy);
+
+		return new ResponseEntity<Page<Work>>(workPages, HttpStatus.OK);
 	}
-	
-	private StatusDto convertToStatusDto(final Status status) {
-		return modelMapper.map(status, StatusDto.class);
+
+	@PostMapping
+	public ResponseEntity<Work> addNewWork(@RequestBody Work work) {
+		Work insertedWork = workService.add(work);
+
+		return new ResponseEntity<Work>(insertedWork, HttpStatus.OK);
 	}
-	
-	private Work convertToWorkModel(final WorkDto workDto) {
-		Work work = modelMapper.map(workDto, Work.class);
-		
-		return work;
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Work> updateWork(@PathVariable("id") long id, @RequestBody Work work) {
+		Work updatedWork = workService.update(work);
+
+		return new ResponseEntity<Work>(updatedWork, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public HttpStatus deleteEmployeeById(@PathVariable("id") long id) {
+		workService.delete(id);
+		return HttpStatus.OK;
 	}
 }

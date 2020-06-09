@@ -20,7 +20,7 @@ import lombok.Data;
 public class Work {
 
 	@Id
-	@Column(name = "name")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
@@ -33,8 +33,8 @@ public class Work {
 	@Column(name = "ending_date")
 	private Date endingDate;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "book_id", nullable = false)
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "status_id", nullable = false)
 	private Status status;
 
 	@Column(name = "created_date")

@@ -55,6 +55,7 @@ public class WorkServiceImpl implements WorkService {
 		Optional<Work> optionalWork = workRepository.findById(id);
 		if (optionalWork.isPresent()) {
 			workRepository.deleteById(id);
+			return 1;
 		}
 		throw new EntityNotFoundException("Not Found Work");
 	}
@@ -68,7 +69,7 @@ public class WorkServiceImpl implements WorkService {
 			throw new BadRequestException("Invalid page size");
 		}
 		
-		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+		Pageable pageable = PageRequest.of(page, size, Sort.by(Optional.ofNullable(sortBy).orElse("id")));
 		return workRepository.findAll(pageable);
 	}
 

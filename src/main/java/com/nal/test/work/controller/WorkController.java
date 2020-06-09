@@ -41,6 +41,7 @@ public class WorkController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Work> updateWork(@PathVariable("id") long id, @RequestBody Work work) {
+		work.setId(id);
 		Work updatedWork = workService.update(work);
 
 		return new ResponseEntity<Work>(updatedWork, HttpStatus.OK);

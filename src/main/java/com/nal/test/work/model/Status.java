@@ -1,7 +1,5 @@
 package com.nal.test.work.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,10 +21,4 @@ public class Status {
 
 	@Column(name = "name")
 	private String name;
-
-	@Column(name = "created_date")
-	private Date createdDate;
-
-	@Column(name = "updated_date")
-	private Date updatedDate;
 }
